@@ -25,9 +25,14 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   // Helper function to get image URL
   const getImageUrl = (imageObj: any) => {
     if (imageObj?.url) {
-      return imageObj.url.startsWith('http')
+      let url = imageObj.url.startsWith('http')
         ? imageObj.url
         : `${API_URL}${imageObj.url}`;
+
+      // Replace localhost URLs with production API URL
+      url = url.replace('http://localhost:1337', API_URL);
+
+      return url;
     }
     return null;
   };
