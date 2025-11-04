@@ -43,7 +43,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            cd /var/www/vhosts/darshanagalketayam.lk
+            cd /var/www/vhosts/darshanagalketayam.lk/repo
 
             # Pull latest changes
             git pull origin master
@@ -52,7 +52,7 @@ jobs:
             cd darshana-nextjs
 
             # Install dependencies
-            npm ci --production
+            npm install --production
 
             # Build Next.js
             npm run build
