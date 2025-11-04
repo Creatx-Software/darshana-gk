@@ -1,0 +1,38 @@
+# Temporary files
+temp/
+*.tmp
+*.bak
+
+# Development files
+*.zip
+*.sql
+*.md
+!README.md
+!DEPLOYMENT_GUIDE.md
+
+# Node modules
+node_modules/
+
+# Scripts and test files
+*.sh
+seed-*.js
+test-*.js
+enable-*.js
+find-*.js
+clean-*.js
+update-*.js
+insert-*.sql
+add-*.sql
+database-schema.sql
+darshana_gk_database.sql
+
+# Package files
+package-lock.json
+package.json
+!darshana-backend/package.json
+!darshana-backend/package-lock.json
+!darshana-nextjs/package.json
+!darshana-nextjs/package-lock.json
+
+# Config files
+STRAPI_CONTENT_TYPES_CONFIG.json
