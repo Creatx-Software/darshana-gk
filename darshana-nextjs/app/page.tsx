@@ -14,6 +14,10 @@ import {
   fetchGraniteColors,
 } from '@/lib/api/strapi';
 
+// Force dynamic rendering - don't try to statically generate this page
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function HomePage() {
   // Fetch all data in parallel
   const [heroSlides, services, testimonials, portfolioCategories, graniteColors] = await Promise.all([

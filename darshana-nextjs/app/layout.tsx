@@ -21,6 +21,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://darshanagalketayam.lk'),
   title: 'Darshana Gal Ketayam - Crafting Timeless Stonework',
   description: 'Four generations of master craftsmen preserving Sri Lanka\'s ancient art of granite carving since 1911. Specializing in sacred forms, memorials, and architectural stonework.',
   keywords: 'stone carving, granite carving, Sri Lanka, Buddha statues, memorials, tombstones, architectural stonework',
