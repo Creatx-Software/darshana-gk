@@ -36,9 +36,14 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
   // Helper function to get image URL
   const getImageUrl = (slide: HeroSlide) => {
     if (slide.image?.url) {
-      return slide.image.url.startsWith('http')
+      let url = slide.image.url.startsWith('http')
         ? slide.image.url
         : `${API_URL}${slide.image.url}`;
+
+      // Replace localhost URLs with production API URL
+      url = url.replace('http://localhost:1337', API_URL);
+
+      return url;
     }
     // Fallback image
     return 'https://images.unsplash.com/photo-1548625149-fc4a29cf7092?w=1920&q=80&auto=format&fit=crop';
@@ -60,6 +65,7 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
                 priority={index === 0}
                 quality={80}
                 sizes="100vw"
+                unoptimized
                 style={{ objectFit: 'cover' }}
               />
             </div>

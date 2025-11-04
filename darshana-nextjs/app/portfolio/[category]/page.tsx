@@ -22,9 +22,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   // Helper function to get image URL
   const getCategoryImageUrl = () => {
     if (category.image?.url) {
-      return category.image.url.startsWith('http')
+      let url = category.image.url.startsWith('http')
         ? category.image.url
         : `${API_URL}${category.image.url}`;
+
+      // Replace localhost URLs with production API URL
+      url = url.replace('http://localhost:1337', API_URL);
+
+      return url;
     }
     return 'https://images.unsplash.com/photo-1548625149-fc4a29cf7092?w=800&q=80&auto=format&fit=crop';
   };
@@ -32,17 +37,27 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const getSubcategoryImageUrl = (subcategory: any) => {
     // First, try subcategory's own image
     if (subcategory.image?.url) {
-      return subcategory.image.url.startsWith('http')
+      let url = subcategory.image.url.startsWith('http')
         ? subcategory.image.url
         : `${API_URL}${subcategory.image.url}`;
+
+      // Replace localhost URLs with production API URL
+      url = url.replace('http://localhost:1337', API_URL);
+
+      return url;
     }
     // Then try to get first gallery item image
     if (subcategory.galleryItems && subcategory.galleryItems.length > 0) {
       const firstItem = subcategory.galleryItems[0];
       if (firstItem.image?.url) {
-        return firstItem.image.url.startsWith('http')
+        let url = firstItem.image.url.startsWith('http')
           ? firstItem.image.url
           : `${API_URL}${firstItem.image.url}`;
+
+        // Replace localhost URLs with production API URL
+        url = url.replace('http://localhost:1337', API_URL);
+
+        return url;
       }
     }
     // Fallback to category image or default
@@ -98,6 +113,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     alt={subcategory.name}
                     width={800}
                     height={600}
+                    unoptimized
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                   <div className="subcategory-overlay">

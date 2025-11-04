@@ -4,12 +4,28 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import type { PortfolioCategory } from '@/lib/api/strapi';
+import { API_URL } from '@/lib/api/config';
 
 interface PortfolioSectionProps {
   categories: PortfolioCategory[];
 }
 
 export default function PortfolioSection({ categories }: PortfolioSectionProps) {
+  // Helper function to get image URL
+  const getImageUrl = (category: PortfolioCategory) => {
+    if (category.image?.url) {
+      let url = category.image.url.startsWith('http')
+        ? category.image.url
+        : `${API_URL}${category.image.url}`;
+
+      // Replace localhost URLs with production API URL
+      url = url.replace('http://localhost:1337', API_URL);
+
+      return url;
+    }
+    return 'https://images.unsplash.com/photo-1548625149-fc4a29cf7092?w=800&q=80&auto=format&fit=crop';
+  };
+
   useEffect(() => {
     // Make entire portfolio card clickable
     const portfolioCards = document.querySelectorAll('.portfolio-item');
@@ -49,10 +65,11 @@ export default function PortfolioSection({ categories }: PortfolioSectionProps) 
             >
               <div className="portfolio-image">
                 <Image
-                  src={category.image?.url ? (category.image.url.startsWith('http') ? category.image.url : `http://localhost:1337${category.image.url}`) : 'https://images.unsplash.com/photo-1548625149-fc4a29cf7092?w=800&q=80&auto=format&fit=crop'}
+                  src={getImageUrl(category)}
                   alt={`${category.name} - Stone Carving`}
                   width={800}
                   height={600}
+                  unoptimized
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>

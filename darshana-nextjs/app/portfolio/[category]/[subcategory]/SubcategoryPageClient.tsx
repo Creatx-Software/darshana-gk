@@ -13,9 +13,14 @@ export default function SubcategoryPageClient({ galleryItems }: SubcategoryPageC
 
   const getImageUrl = (imageObj: any) => {
     if (imageObj?.url) {
-      return imageObj.url.startsWith('http')
+      let url = imageObj.url.startsWith('http')
         ? imageObj.url
         : `${API_URL}${imageObj.url}`;
+
+      // Replace localhost URLs with production API URL
+      url = url.replace('http://localhost:1337', API_URL);
+
+      return url;
     }
     return 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&q=80&auto=format&fit=crop';
   };
