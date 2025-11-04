@@ -94,7 +94,13 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
                     data-index={index}
                   >
                     <div className="gallery-image">
-                      <Image src={imageUrl} alt={item.title} width={800} height={600} />
+                      <Image
+                        src={imageUrl}
+                        alt={item.title}
+                        width={800}
+                        height={600}
+                        unoptimized
+                      />
                       <div className="gallery-overlay">
                         <button className="view-btn">
                           View Full Image
