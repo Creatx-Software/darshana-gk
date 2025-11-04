@@ -1,0 +1,56 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site-setting",
+    "pluralName": "site-settings",
+    "displayName": "Site Settings",
+    "description": "Global site configuration and contact information"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "siteName": {
+      "type": "string",
+      "required": true,
+      "default": "Darshana Gal Ketayam"
+    },
+    "siteTagline": {
+      "type": "text"
+    },
+    "siteDescription": {
+      "type": "richtext"
+    },
+    "founderYear": {
+      "type": "integer",
+      "default": 1911
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phonePrimary": {
+      "type": "string"
+    },
+    "phoneSecondary": {
+      "type": "string"
+    },
+    "phoneTertiary": {
+      "type": "string"
+    },
+    "address": {
+      "type": "richtext"
+    },
+    "businessHours": {
+      "type": "string"
+    },
+    "facebookUrl": {
+      "type": "string"
+    },
+    "instagramUrl": {
+      "type": "string"
+    }
+  }
+}

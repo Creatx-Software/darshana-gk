@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "portfolio_categories",
+  "info": {
+    "singularName": "portfolio-category",
+    "pluralName": "portfolio-categories",
+    "displayName": "Portfolio Category",
+    "description": "Main portfolio categories"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "displayOrder": {
+      "type": "integer",
+      "default": 0
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "subcategories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::portfolio-subcategory.portfolio-subcategory",
+      "mappedBy": "category"
+    }
+  }
+}
