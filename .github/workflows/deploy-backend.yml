@@ -38,7 +38,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            cd /var/www/vhosts/darshanagalketayam.lk/repo
+            cd /var/www/vhosts/darshanagalketayam.lk/api.darshanagalketayam.lk
 
             # Pull latest changes
             git pull origin master
