@@ -34,29 +34,15 @@ jobs:
         run: npm run build
 
       - name: Deploy to VPS via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./darshana-nextjs/.next/
-          server-dir: /var/www/vhosts/darshanagalketayam.lk/httpdocs/darshana-nextjs/.next/
-
-      - name: Upload package files via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./darshana-nextjs/
-          server-dir: /var/www/vhosts/darshanagalketayam.lk/httpdocs/darshana-nextjs/
-          exclude: |
-            **/.next/**
-            **/node_modules/**
-            **/.git/**
-            **/.github/**
+          local_path: ./darshana-nextjs/*
+          remote_path: /var/www/vhosts/darshanagalketayam.lk/httpdocs/darshana-nextjs/
+          sftp_only: true
+          args: '-o ConnectTimeout=5'
 
       - name: Deployment Status
         run: echo "Frontend deployed successfully to darshanagalketayam.lk"
