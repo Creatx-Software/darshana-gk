@@ -33,13 +33,23 @@ jobs:
           NODE_ENV: production
         run: npm run build
 
+      - name: Create deployment package
+        working-directory: ./darshana-nextjs
+        run: |
+          mkdir -p ../deploy-package
+          cp -r .next ../deploy-package/
+          cp -r public ../deploy-package/
+          cp package.json ../deploy-package/
+          cp package-lock.json ../deploy-package/
+          cp next.config.js ../deploy-package/ 2>/dev/null || true
+
       - name: Deploy to VPS via SFTP
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          local_path: ./darshana-nextjs/
+          local_path: ./deploy-package/
           remote_path: /var/www/vhosts/darshanagalketayam.lk/httpdocs/
           sftp_only: true
           args: '-o ConnectTimeout=5'
