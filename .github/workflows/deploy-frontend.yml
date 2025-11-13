@@ -39,8 +39,8 @@ jobs:
           server: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          local_path: ./darshana-nextjs/*
-          remote_path: /var/www/vhosts/darshanagalketayam.lk/httpdocs/darshana-nextjs/
+          local_path: ./darshana-nextjs/
+          remote_path: /var/www/vhosts/darshanagalketayam.lk/httpdocs/
           sftp_only: true
           args: '-o ConnectTimeout=5'
 
