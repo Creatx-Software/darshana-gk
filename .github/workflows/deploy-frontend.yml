@@ -33,31 +33,30 @@ jobs:
           NODE_ENV: production
         run: npm run build
 
-      - name: Deploy to VPS via SSH
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Deploy to VPS via SFTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT }}
-          script: |
-            cd /var/www/vhosts/darshanagalketayam.lk/httpdocs
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./darshana-nextjs/.next/
+          server-dir: /var/www/vhosts/darshanagalketayam.lk/httpdocs/darshana-nextjs/.next/
 
-            # Pull latest changes
-            git pull origin master
-
-            # Navigate to frontend directory
-            cd darshana-nextjs
-
-            # Install dependencies
-            npm install --production
-
-            # Build Next.js
-            npm run build
-
-            # Restart Next.js using PM2
-            pm2 restart darshana-frontend || pm2 start npm --name "darshana-frontend" -- run start
-            pm2 save
+      - name: Upload package files via SFTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./darshana-nextjs/
+          server-dir: /var/www/vhosts/darshanagalketayam.lk/httpdocs/darshana-nextjs/
+          exclude: |
+            **/.next/**
+            **/node_modules/**
+            **/.git/**
+            **/.github/**
 
       - name: Deployment Status
         run: echo "Frontend deployed successfully to darshanagalketayam.lk"
