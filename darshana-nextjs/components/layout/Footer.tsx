@@ -1,6 +1,8 @@
 import Link from 'next/link';
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="footer">
       <div className="container">
@@ -19,7 +21,18 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2024 Darshana Gal Ketayam. All rights reserved.</p>
+          <p>&copy; {currentYear} Darshana Gal Ketayam. All rights reserved.</p>
+          <p>
+            Designed and Developed by{' '}
+            <a
+              href="https://creatxsoftware.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'inherit', textDecoration: 'underline' }}
+            >
+              CreatxSoftware
+            </a>
+          </p>
         </div>
       </div>
     </footer>
