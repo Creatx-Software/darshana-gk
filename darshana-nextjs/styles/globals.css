@@ -2567,3 +2567,181 @@ img::selection {
 img::-moz-selection {
     background: transparent;
 }
+
+/* ===================================
+   CUSTOM DESIGN PAGE
+   =================================== */
+
+.custom-design-intro {
+    padding: 6rem 0 4rem;
+    background: var(--color-bg);
+}
+
+.custom-design-features {
+    margin-top: 4rem;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-stone);
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #999;
+}
+
+.feature-icon svg {
+    stroke: #999;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover .feature-icon svg {
+    stroke: var(--color-stone);
+    opacity: 1;
+}
+
+.feature-item h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-stone);
+}
+
+.feature-item p {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+}
+
+/* Catalog Section */
+.catalog-section {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(30, 30, 30, 0.95) 100%);
+}
+
+.catalog-box {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 4rem 3rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.catalog-content h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-stone);
+}
+
+.catalog-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.catalog-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+}
+
+/* Custom Design Gallery */
+.custom-design-gallery {
+    padding: 6rem 0;
+    background: var(--color-bg);
+}
+
+.custom-design-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.custom-design-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--color-stone);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.design-image {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.design-image img {
+    transition: transform 0.5s ease;
+}
+
+.custom-design-card:hover .design-image img {
+    transform: scale(1.1);
+}
+
+.design-info {
+    padding: 2rem;
+    text-align: center;
+}
+
+.design-info h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-stone);
+}
+
+.design-info p {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .catalog-box {
+        padding: 3rem 2rem;
+    }
+
+    .catalog-content h2 {
+        font-size: 2rem;
+    }
+
+    .design-image {
+        height: 250px;
+    }
+}
