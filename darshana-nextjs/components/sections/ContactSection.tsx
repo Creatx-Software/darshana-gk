@@ -139,11 +139,10 @@ export default function ContactSection() {
                   required
                 >
                   <option value="">Select Service</option>
-                  <option value="sacred">Sacred Forms</option>
-                  <option value="crafts">Crafts & Ornamentation</option>
-                  <option value="living">Living Spaces</option>
-                  <option value="openings">Openings & Dedications</option>
-                  <option value="memorials">Memorials & Remembrance</option>
+                  <option value="plaques">Plaques</option>
+                  <option value="memorials">Memorials</option>
+                  <option value="carvings">Carvings</option>
+                  <option value="architectural">Architectural elements</option>
                   <option value="other">Other</option>
                 </select>
               </div>
