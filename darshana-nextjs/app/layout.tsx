@@ -5,6 +5,7 @@ import Navigation from '@/components/layout/Navigation'
 import LoadingScreen from '@/components/layout/LoadingScreen'
 import ScrollAnimations from '@/components/layout/ScrollAnimations'
 import Footer from '@/components/layout/Footer'
+import ImageProtection from '@/components/layout/ImageProtection'
 
 const cormorantGaramond = Cormorant_Garamond({
   weight: ['300', '400', '500', '600', '700'],
@@ -63,6 +64,7 @@ export default function RootLayout({
       <body>
         <LoadingScreen />
         <ScrollAnimations />
+        <ImageProtection />
         <Navigation />
         {children}
         <Footer />

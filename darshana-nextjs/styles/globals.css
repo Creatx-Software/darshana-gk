@@ -2533,3 +2533,37 @@ section {
 .mb-2 { margin-bottom: var(--spacing-sm); }
 .mb-3 { margin-bottom: var(--spacing-md); }
 .mb-4 { margin-bottom: var(--spacing-lg); }
+
+/* ===================================
+   IMAGE PROTECTION
+   =================================== */
+
+/* Disable image selection and dragging */
+img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+}
+
+/* Re-enable pointer events for interactive images (like logos in nav) */
+.nav img,
+.footer img,
+.loading-logo img {
+    pointer-events: auto;
+}
+
+/* Prevent text selection on images */
+img::selection {
+    background: transparent;
+}
+
+img::-moz-selection {
+    background: transparent;
+}
