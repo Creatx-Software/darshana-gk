@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -8,7 +9,13 @@ export default function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-brand">
-            <h3>DARSHANA GAL KETAYAM</h3>
+            <Image
+              src="/darshana-gal-ketayam-horizontol-white.svg"
+              alt="Darshana Gal Ketayam"
+              width={250}
+              height={80}
+              className="footer-logo"
+            />
             <p>Crafting Timeless Stonework Since 1911</p>
           </div>
           <div className="footer-links">
