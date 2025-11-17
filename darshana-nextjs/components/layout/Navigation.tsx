@@ -28,18 +28,15 @@ export default function Navigation() {
   return (
     <nav className={`nav ${isScrolled ? 'scrolled' : ''}`} id="nav">
       <div className="nav-container">
-        <div className="nav-logo-wrapper">
-          <Link href="/" className="nav-logo">
-            <Image
-              src="/darshana-gal-katayam-light.svg"
-              alt="Darshana Gal Ketayam"
-              className="logo-image"
-              width={150}
-              height={50}
-              priority
-            />
-          </Link>
-        </div>
+        <Link href="/" className="nav-logo">
+          <Image
+            src="/darshana-gal-ketayam-horizontol-white.svg"
+            alt="Darshana Gal Ketayam"
+            width={200}
+            height={60}
+            priority
+          />
+        </Link>
         <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`} id="navMenu">
           <li><Link href="/" className="nav-link" onClick={closeMenu}>HOME</Link></li>
           <li><Link href="/#portfolio" className="nav-link" onClick={closeMenu}>PORTFOLIO</Link></li>
