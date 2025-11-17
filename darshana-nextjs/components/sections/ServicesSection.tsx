@@ -5,14 +5,6 @@ interface ServicesSectionProps {
 }
 
 export default function ServicesSection({ services }: ServicesSectionProps) {
-  // Reorder services so Custom Design is at the end and will be centered
-  const reorderedServices = [...services].sort((a, b) => {
-    // Put Custom Design last
-    if (a.title === 'CUSTOM DESIGN') return 1;
-    if (b.title === 'CUSTOM DESIGN') return -1;
-    return a.displayOrder - b.displayOrder;
-  });
-
   return (
     <section className="services" id="services">
       <div className="container">
@@ -26,10 +18,10 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
         </div>
 
         <div className="services-grid">
-          {reorderedServices.map((service, index) => (
+          {services.map((service, index) => (
             <div
               key={service.documentId}
-              className={`service-card ${service.title === 'CUSTOM DESIGN' ? 'service-card-centered' : ''}`}
+              className="service-card"
               data-aos="fade-up"
               data-aos-delay={index * 100}
             >
