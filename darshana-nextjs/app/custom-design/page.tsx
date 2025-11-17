@@ -1,11 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+import { useState, useEffect } from 'react';
 
 export default function CustomDesignPage() {
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+
   // Sample custom design showcase data
   const customDesigns = [
     {
@@ -33,6 +34,39 @@ export default function CustomDesignPage() {
       image: 'https://images.unsplash.com/photo-1604357209793-fca5dca89f97?w=800&q=80',
     },
   ];
+
+  const openLightbox = (index: number) => {
+    setSelectedImage(index);
+  };
+
+  const closeLightbox = () => {
+    setSelectedImage(null);
+  };
+
+  const nextImage = () => {
+    if (selectedImage !== null && customDesigns.length > 0) {
+      setSelectedImage((selectedImage + 1) % customDesigns.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (selectedImage !== null && customDesigns.length > 0) {
+      setSelectedImage(
+        selectedImage === 0 ? customDesigns.length - 1 : selectedImage - 1
+      );
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImage === null) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImage]);
 
   return (
     <>
@@ -173,21 +207,25 @@ export default function CustomDesignPage() {
             {customDesigns.map((design, index) => (
               <div
                 key={design.id}
-                className="custom-design-card"
+                className="gallery-item"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <div className="design-image">
+                <div className="gallery-image">
                   <Image
                     src={design.image}
                     alt={design.title}
                     width={800}
                     height={600}
                     unoptimized
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
+                  <div className="gallery-overlay">
+                    <button className="view-btn" onClick={() => openLightbox(index)}>
+                      View Full Image
+                    </button>
+                  </div>
                 </div>
-                <div className="design-info">
+                <div className="gallery-info">
                   <h3>{design.title}</h3>
                   <p>{design.description}</p>
                 </div>
@@ -212,6 +250,41 @@ export default function CustomDesignPage() {
           </div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      <div
+        className={`lightbox ${selectedImage !== null ? 'active' : ''}`}
+        onClick={closeLightbox}
+      >
+        <button className="lightbox-close" onClick={closeLightbox}>
+          &times;
+        </button>
+        <button
+          className="lightbox-prev"
+          onClick={(e) => {
+            e.stopPropagation();
+            prevImage();
+          }}
+        >
+          ‹
+        </button>
+        <button
+          className="lightbox-next"
+          onClick={(e) => {
+            e.stopPropagation();
+            nextImage();
+          }}
+        >
+          ›
+        </button>
+        {selectedImage !== null && customDesigns[selectedImage] && (
+          <img
+            className="lightbox-image"
+            src={customDesigns[selectedImage].image}
+            alt={customDesigns[selectedImage].title}
+          />
+        )}
+      </div>
     </>
   );
 }
