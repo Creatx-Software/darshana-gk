@@ -108,7 +108,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
                       />
                       <div className="gallery-overlay">
                         <button className="view-btn">
-                          View Full Image
+                          View Images
                         </button>
                       </div>
                     </div>

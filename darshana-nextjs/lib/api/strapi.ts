@@ -51,6 +51,7 @@ export interface GalleryItem extends StrapiEntity {
   isActive: boolean;
   isFeatured: boolean;
   image?: any;
+  images?: any[];
   subcategory?: PortfolioSubcategory;
 }
 
@@ -134,7 +135,7 @@ export async function fetchPortfolioCategories(populate = true): Promise<Portfol
 }
 
 export async function fetchPortfolioCategory(slug: string): Promise<PortfolioCategory | null> {
-  const url = `${API_ENDPOINTS.portfolioCategories}?filters[slug][$eq]=${slug}&populate[subcategories][populate][0]=image&populate[subcategories][populate][1]=galleryItems.image`;
+  const url = `${API_ENDPOINTS.portfolioCategories}?filters[slug][$eq]=${slug}&populate[subcategories][populate][0]=image&populate[subcategories][populate][1]=galleryItems.image&populate[subcategories][populate][2]=galleryItems.images`;
 
   const res = await fetch(url, { next: { revalidate: 60 } });
   if (!res.ok) return null;
@@ -143,7 +144,7 @@ export async function fetchPortfolioCategory(slug: string): Promise<PortfolioCat
 }
 
 export async function fetchPortfolioSubcategory(slug: string): Promise<PortfolioSubcategory | null> {
-  const url = `${API_ENDPOINTS.portfolioSubcategories}?filters[slug][$eq]=${slug}&populate[0]=image&populate[category][populate]=image&populate[galleryItems][populate]=image`;
+  const url = `${API_ENDPOINTS.portfolioSubcategories}?filters[slug][$eq]=${slug}&populate[0]=image&populate[category][populate]=image&populate[galleryItems][populate][0]=image&populate[galleryItems][populate][1]=images`;
 
   const res = await fetch(url, { next: { revalidate: 60 } });
   if (!res.ok) return null;

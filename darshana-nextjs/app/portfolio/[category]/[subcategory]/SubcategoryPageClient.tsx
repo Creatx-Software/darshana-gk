@@ -9,7 +9,8 @@ interface SubcategoryPageClientProps {
 }
 
 export default function SubcategoryPageClient({ galleryItems }: SubcategoryPageClientProps) {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
 
   const getImageUrl = (imageObj: any) => {
     if (imageObj?.url) {
@@ -25,38 +26,56 @@ export default function SubcategoryPageClient({ galleryItems }: SubcategoryPageC
     return 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&q=80&auto=format&fit=crop';
   };
 
-  const openLightbox = (index: number) => {
-    setSelectedImage(index);
+  // Get all images for the selected item
+  const getCurrentImages = () => {
+    if (selectedItemIndex === null) return [];
+    const item = galleryItems[selectedItemIndex];
+
+    // If item has multiple images, use them; otherwise use the single image
+    if (item.images && item.images.length > 0) {
+      return item.images;
+    } else if (item.image) {
+      return [item.image];
+    }
+    return [];
+  };
+
+  const openLightbox = (itemIndex: number) => {
+    setSelectedItemIndex(itemIndex);
+    setSelectedImageIndex(0); // Always start with first image
   };
 
   const closeLightbox = () => {
-    setSelectedImage(null);
+    setSelectedItemIndex(null);
+    setSelectedImageIndex(0);
   };
 
   const nextImage = () => {
-    if (selectedImage !== null && galleryItems.length > 0) {
-      setSelectedImage((selectedImage + 1) % galleryItems.length);
+    const images = getCurrentImages();
+    if (images.length > 0) {
+      setSelectedImageIndex((prev) => (prev + 1) % images.length);
     }
   };
 
   const prevImage = () => {
-    if (selectedImage !== null && galleryItems.length > 0) {
-      setSelectedImage(
-        selectedImage === 0 ? galleryItems.length - 1 : selectedImage - 1
+    const images = getCurrentImages();
+    if (images.length > 0) {
+      setSelectedImageIndex((prev) =>
+        prev === 0 ? images.length - 1 : prev - 1
       );
     }
   };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedImage === null) return;
+      if (selectedItemIndex === null) return;
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowRight') nextImage();
       if (e.key === 'ArrowLeft') prevImage();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedImage]);
+  }, [selectedItemIndex, selectedImageIndex]);
 
   useEffect(() => {
     // Add click handlers to gallery items
@@ -66,8 +85,8 @@ export default function SubcategoryPageClient({ galleryItems }: SubcategoryPageC
     });
 
     return () => {
-      galleryItemElements.forEach((btn, index) => {
-        btn.removeEventListener('click', () => openLightbox(index));
+      galleryItemElements.forEach((btn) => {
+        btn.removeEventListener('click', () => openLightbox);
       });
     };
   }, []);
@@ -76,40 +95,64 @@ export default function SubcategoryPageClient({ galleryItems }: SubcategoryPageC
     return null;
   }
 
+  const currentImages = getCurrentImages();
+  const currentImage = currentImages[selectedImageIndex];
+
   return (
     <div
-      className={`lightbox ${selectedImage !== null ? 'active' : ''}`}
+      className={`lightbox ${selectedItemIndex !== null ? 'active' : ''}`}
       id="lightbox"
       onClick={closeLightbox}
     >
       <button className="lightbox-close" onClick={closeLightbox}>
         &times;
       </button>
-      <button
-        className="lightbox-prev"
-        onClick={(e) => {
-          e.stopPropagation();
-          prevImage();
-        }}
-      >
-        ‹
-      </button>
-      <button
-        className="lightbox-next"
-        onClick={(e) => {
-          e.stopPropagation();
-          nextImage();
-        }}
-      >
-        ›
-      </button>
-      {selectedImage !== null && galleryItems[selectedImage] && (
-        <img
-          className="lightbox-image"
-          id="lightbox-image"
-          src={getImageUrl(galleryItems[selectedImage].image)}
-          alt={galleryItems[selectedImage].title}
-        />
+
+      {/* Only show navigation if there are multiple images */}
+      {currentImages.length > 1 && (
+        <>
+          <button
+            className="lightbox-prev"
+            onClick={(e) => {
+              e.stopPropagation();
+              prevImage();
+            }}
+          >
+            ‹
+          </button>
+          <button
+            className="lightbox-next"
+            onClick={(e) => {
+              e.stopPropagation();
+              nextImage();
+            }}
+          >
+            ›
+          </button>
+        </>
+      )}
+
+      {selectedItemIndex !== null && currentImage && (
+        <>
+          <img
+            className="lightbox-image"
+            id="lightbox-image"
+            src={getImageUrl(currentImage)}
+            alt={galleryItems[selectedItemIndex].title}
+          />
+
+          {/* Image counter */}
+          {currentImages.length > 1 && (
+            <div className="lightbox-counter">
+              {selectedImageIndex + 1} / {currentImages.length}
+            </div>
+          )}
+
+          {/* Item title */}
+          <div className="lightbox-title">
+            {galleryItems[selectedItemIndex].title}
+          </div>
+        </>
       )}
     </div>
   );
