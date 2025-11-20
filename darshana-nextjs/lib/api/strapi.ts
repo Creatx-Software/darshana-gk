@@ -29,6 +29,7 @@ export interface PortfolioCategory extends StrapiEntity {
   displayOrder: number;
   isActive: boolean;
   image?: any;
+  heroImage?: any;
   subcategories?: PortfolioSubcategory[];
 }
 
@@ -135,7 +136,7 @@ export async function fetchPortfolioCategories(populate = true): Promise<Portfol
 }
 
 export async function fetchPortfolioCategory(slug: string): Promise<PortfolioCategory | null> {
-  const url = `${API_ENDPOINTS.portfolioCategories}?filters[slug][$eq]=${slug}&populate[subcategories][populate][0]=image&populate[subcategories][populate][1]=galleryItems.image&populate[subcategories][populate][2]=galleryItems.images`;
+  const url = `${API_ENDPOINTS.portfolioCategories}?filters[slug][$eq]=${slug}&populate[0]=image&populate[1]=heroImage&populate[2]=subcategories.image&populate[3]=subcategories.galleryItems.image&populate[4]=subcategories.galleryItems.images`;
 
   const res = await fetch(url, { next: { revalidate: 60 } });
   if (!res.ok) return null;

@@ -33,6 +33,12 @@
       "required": false,
       "allowedTypes": ["images"]
     },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
     "displayOrder": {
       "type": "integer",
       "default": 0

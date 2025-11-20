@@ -19,12 +19,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  // Helper function to get image URL
+  // Helper function to get image URL (prioritize heroImage for hero section)
   const getCategoryImageUrl = () => {
-    if (category.image?.url) {
-      let url = category.image.url.startsWith('http')
-        ? category.image.url
-        : `${API_URL}${category.image.url}`;
+    // Use heroImage if available, otherwise fallback to image
+    const imageData = category.heroImage || category.image;
+
+    if (imageData?.url) {
+      let url = imageData.url.startsWith('http')
+        ? imageData.url
+        : `${API_URL}${imageData.url}`;
 
       // Replace localhost URLs with production API URL
       url = url.replace('http://localhost:1337', API_URL);
