@@ -125,7 +125,7 @@ export interface Article extends StrapiEntity {
 // Fetch functions
 export async function fetchPortfolioCategories(populate = true): Promise<PortfolioCategory[]> {
   const url = populate
-    ? `${API_ENDPOINTS.portfolioCategories}?populate[subcategories][populate]=galleryItems&sort=displayOrder:asc`
+    ? `${API_ENDPOINTS.portfolioCategories}?populate[0]=image&populate[1]=subcategories.galleryItems&sort=displayOrder:asc`
     : `${API_ENDPOINTS.portfolioCategories}?sort=displayOrder:asc`;
 
   const res = await fetch(url, { next: { revalidate: 60 } });
