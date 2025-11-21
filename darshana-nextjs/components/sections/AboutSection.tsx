@@ -1,6 +1,32 @@
 import Image from 'next/image';
+import type { SiteSetting } from '@/lib/api/strapi';
+import { API_URL } from '@/lib/api/config';
 
-export default function AboutSection() {
+interface AboutSectionProps {
+  siteSettings: SiteSetting | null;
+}
+
+export default function AboutSection({ siteSettings }: AboutSectionProps) {
+  // Helper function to get heritage image URL
+  const getHeritageImageUrl = () => {
+    if (siteSettings?.heritageImage) {
+      // Try to get URL from formats.large or formats.medium, or direct url
+      const imageUrl = siteSettings.heritageImage.formats?.large?.url ||
+                       siteSettings.heritageImage.formats?.medium?.url ||
+                       siteSettings.heritageImage.url;
+
+      if (imageUrl) {
+        let url = imageUrl.startsWith('http')
+          ? imageUrl
+          : `${API_URL}${imageUrl}`;
+
+        url = url.replace('http://localhost:1337', API_URL);
+        return url;
+      }
+    }
+    return 'https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&q=80&auto=format&fit=crop';
+  };
+
   return (
     <>
       {/* About Intro */}
@@ -23,10 +49,11 @@ export default function AboutSection() {
             </div>
             <div className="about-image" data-aos="fade-left">
               <Image
-                src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&q=80&auto=format&fit=crop"
+                src={getHeritageImageUrl()}
                 alt="Stone Carving Craftsmanship"
                 width={800}
                 height={600}
+                unoptimized
                 style={{ width: '100%', height: 'auto' }}
               />
             </div>

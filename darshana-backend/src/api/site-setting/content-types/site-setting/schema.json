@@ -51,6 +51,18 @@
     },
     "instagramUrl": {
       "type": "string"
+    },
+    "heritageImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "legacyImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
     }
   }
 }

@@ -1,6 +1,32 @@
 import Image from 'next/image';
+import type { SiteSetting } from '@/lib/api/strapi';
+import { API_URL } from '@/lib/api/config';
 
-export default function FoundersStorySection() {
+interface FoundersStorySectionProps {
+  siteSettings: SiteSetting | null;
+}
+
+export default function FoundersStorySection({ siteSettings }: FoundersStorySectionProps) {
+  // Helper function to get legacy image URL
+  const getLegacyImageUrl = () => {
+    if (siteSettings?.legacyImage) {
+      // Try to get URL from formats.large or formats.medium, or direct url
+      const imageUrl = siteSettings.legacyImage.formats?.large?.url ||
+                       siteSettings.legacyImage.formats?.medium?.url ||
+                       siteSettings.legacyImage.url;
+
+      if (imageUrl) {
+        let url = imageUrl.startsWith('http')
+          ? imageUrl
+          : `${API_URL}${imageUrl}`;
+
+        url = url.replace('http://localhost:1337', API_URL);
+        return url;
+      }
+    }
+    return 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&q=80&auto=format&fit=crop';
+  };
+
   return (
     <>
       {/* Founder's Story */}
@@ -30,10 +56,11 @@ export default function FoundersStorySection() {
               </div>
               <div className="story-image" data-aos="fade-left">
                 <Image
-                  src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&q=80&auto=format&fit=crop"
+                  src={getLegacyImageUrl()}
                   alt="Stone Carving Heritage"
                   width={800}
                   height={600}
+                  unoptimized
                   style={{ width: '100%', height: 'auto' }}
                 />
               </div>

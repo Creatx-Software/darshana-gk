@@ -99,6 +99,8 @@ export interface SiteSetting {
   facebookUrl?: string;
   instagramUrl?: string;
   logo?: any;
+  heritageImage?: any;
+  legacyImage?: any;
 }
 
 export interface GraniteColor extends StrapiEntity {
@@ -175,10 +177,14 @@ export async function fetchHeroSlides(): Promise<HeroSlide[]> {
 }
 
 export async function fetchSiteSettings(): Promise<SiteSetting | null> {
-  const res = await fetch(`${API_ENDPOINTS.siteSettings}?populate=logo`, { next: { revalidate: 60 } });
-  if (!res.ok) return null;
-  const json: StrapiResponse<SiteSetting> = await res.json();
-  return json.data;
+  try {
+    const res = await fetch(`${API_ENDPOINTS.siteSettings}?populate=*`, { next: { revalidate: 60 } });
+    if (!res.ok) return null;
+    const json: StrapiResponse<SiteSetting> = await res.json();
+    return json.data;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function fetchGraniteColors(): Promise<GraniteColor[]> {

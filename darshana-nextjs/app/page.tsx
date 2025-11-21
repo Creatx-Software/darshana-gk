@@ -12,6 +12,7 @@ import {
   fetchTestimonials,
   fetchPortfolioCategories,
   fetchGraniteColors,
+  fetchSiteSettings,
 } from '@/lib/api/strapi';
 
 // Force dynamic rendering - don't try to statically generate this page
@@ -20,22 +21,23 @@ export const revalidate = 0;
 
 export default async function HomePage() {
   // Fetch all data in parallel
-  const [heroSlides, services, testimonials, portfolioCategories, graniteColors] = await Promise.all([
+  const [heroSlides, services, testimonials, portfolioCategories, graniteColors, siteSettings] = await Promise.all([
     fetchHeroSlides(),
     fetchServices(),
     fetchTestimonials(),
     fetchPortfolioCategories(true),
     fetchGraniteColors(),
+    fetchSiteSettings().catch(() => null),
   ]);
 
   return (
     <main>
       <HeroCarousel slides={heroSlides} />
-      <AboutSection />
+      <AboutSection siteSettings={siteSettings} />
       <PortfolioSection categories={portfolioCategories} />
       <GraniteColorsSection colors={graniteColors} />
       <ServicesSection services={services} />
-      <FoundersStorySection />
+      <FoundersStorySection siteSettings={siteSettings} />
       <TestimonialsSection testimonials={testimonials} />
       <ContactSection />
     </main>

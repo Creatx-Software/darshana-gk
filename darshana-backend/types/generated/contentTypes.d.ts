@@ -759,7 +759,9 @@ export interface ApiSiteSettingSiteSetting extends Struct.SingleTypeSchema {
     email: Schema.Attribute.Email & Schema.Attribute.Required;
     facebookUrl: Schema.Attribute.String;
     founderYear: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1911>;
+    heritageImage: Schema.Attribute.Media<'images'>;
     instagramUrl: Schema.Attribute.String;
+    legacyImage: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
