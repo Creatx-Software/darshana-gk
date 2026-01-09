@@ -50,9 +50,6 @@ export default function PortfolioSection({ categories }: PortfolioSectionProps) 
           <h2 className="section-title" data-aos="fade-up">
             Our Portfolio
           </h2>
-          <p className="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-            Five Timeless Categories of Stone Artistry
-          </p>
         </div>
 
         <div className="portfolio-grid">

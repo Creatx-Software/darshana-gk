@@ -509,8 +509,9 @@ p {
 
 .hero-cta {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
 }
 
@@ -632,6 +633,247 @@ p {
 }
 
 /* ===================================
+   METAL BUTTON COMPONENT
+   =================================== */
+
+.metal-button {
+    position: relative;
+    background: none;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.1s ease, filter 0.2s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3));
+    display: inline-block;
+    text-decoration: none;
+}
+
+.metal-button-bg {
+    display: block;
+    width: 280px;
+    height: auto;
+    pointer-events: none;
+}
+
+.metal-button-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #3a3a3a;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    user-select: none;
+    pointer-events: none;
+    font-family: var(--font-body);
+    white-space: nowrap;
+}
+
+/* Hover state */
+.metal-button:hover {
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35)) brightness(1.05);
+}
+
+/* Active/pressed state */
+.metal-button:active {
+    transform: scale(0.98);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25)) brightness(0.95);
+}
+
+/* Focus state for accessibility */
+.metal-button:focus-visible {
+    outline: 2px solid var(--color-stone);
+    outline-offset: 4px;
+}
+
+/* Disabled state */
+.metal-button:disabled {
+    cursor: not-allowed;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15)) grayscale(50%) opacity(0.7);
+}
+
+.metal-button:disabled:hover {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15)) grayscale(50%) opacity(0.7);
+    transform: none;
+}
+
+/* Size Variants */
+.metal-button-small .metal-button-bg {
+    width: 200px;
+}
+
+.metal-button-small .metal-button-text {
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.metal-button-large .metal-button-bg {
+    width: 350px;
+}
+
+.metal-button-large .metal-button-text {
+    font-size: 16px;
+    letter-spacing: 4px;
+}
+
+.metal-button-xlarge .metal-button-bg {
+    width: 420px;
+}
+
+.metal-button-xlarge .metal-button-text {
+    font-size: 20px;
+    letter-spacing: 5px;
+}
+
+/* Outline Variant - Bordered transparent button matching metal pill shape */
+.metal-button-outline {
+    filter: none;
+    background: transparent;
+    border: 2px solid rgba(160, 160, 160, 0.5);
+    border-radius: 100px;
+    width: 280px;
+    height: 62px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.metal-button-outline .metal-button-text {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    color: var(--color-light-gray);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.metal-button-outline:hover {
+    filter: none;
+    background: rgba(160, 160, 160, 0.1);
+    border-color: var(--color-stone);
+    box-shadow: 0 0 20px rgba(160, 160, 160, 0.15);
+}
+
+.metal-button-outline:hover .metal-button-text {
+    color: var(--color-white);
+}
+
+.metal-button-outline:active {
+    transform: scale(0.98);
+    filter: none;
+    background: rgba(160, 160, 160, 0.15);
+}
+
+/* Outline size variants */
+.metal-button-outline.metal-button-small {
+    width: 200px;
+    height: 47px;
+}
+
+.metal-button-outline.metal-button-small .metal-button-text {
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.metal-button-outline.metal-button-large {
+    width: 350px;
+    height: 82px;
+}
+
+.metal-button-outline.metal-button-large .metal-button-text {
+    font-size: 16px;
+    letter-spacing: 4px;
+}
+
+.metal-button-outline.metal-button-xlarge {
+    width: 420px;
+    height: 98px;
+}
+
+.metal-button-outline.metal-button-xlarge .metal-button-text {
+    font-size: 20px;
+    letter-spacing: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .metal-button-bg {
+        width: 220px;
+    }
+
+    .metal-button-text {
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+
+    .metal-button-small .metal-button-bg {
+        width: 180px;
+    }
+
+    .metal-button-small .metal-button-text {
+        font-size: 10px;
+    }
+
+    .metal-button-large .metal-button-bg {
+        width: 260px;
+    }
+
+    .metal-button-large .metal-button-text {
+        font-size: 13px;
+        letter-spacing: 3px;
+    }
+
+    /* Outline responsive */
+    .metal-button-outline {
+        width: 220px;
+        height: 52px;
+    }
+
+    .metal-button-outline .metal-button-text {
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+
+    .metal-button-outline.metal-button-large {
+        width: 260px;
+        height: 61px;
+    }
+}
+
+@media (max-width: 480px) {
+    .metal-button-bg {
+        width: 200px;
+    }
+
+    .metal-button-text {
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    /* Outline responsive */
+    .metal-button-outline {
+        width: 200px;
+        height: 47px;
+    }
+
+    .metal-button-outline .metal-button-text {
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+}
+
+/* ===================================
    BUTTONS - STONE CARVED STYLE
    =================================== */
 
@@ -723,14 +965,7 @@ section {
 }
 
 .section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 2px;
-    background: var(--color-stone);
+    display: none;
 }
 
 .section-subtitle {
@@ -811,8 +1046,8 @@ section {
 }
 
 .mv-icon {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     margin: 0 0 2rem 0;
     position: relative;
     display: flex;
@@ -832,55 +1067,46 @@ section {
 .mv-icon-mission::before {
     content: '';
     position: absolute;
-    width: 30px;
-    height: 30px;
-    border: 3px solid var(--color-stone);
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--color-stone);
     transform: rotate(45deg);
 }
 
 .mv-icon-mission::after {
     content: '';
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     background: var(--color-stone);
     border-radius: 50%;
 }
 
-/* Vision Icon - Lotus/Mandala Pattern */
+/* Vision Icon - Same square diamond style as Mission */
 .mv-icon-vision {
-    background: radial-gradient(circle at center, transparent 30%, rgba(192, 192, 192, 0.1) 30%, rgba(192, 192, 192, 0.1) 35%, transparent 35%);
+    background:
+        linear-gradient(45deg, transparent 30%, rgba(192, 192, 192, 0.1) 30%, rgba(192, 192, 192, 0.1) 70%, transparent 70%),
+        linear-gradient(-45deg, transparent 30%, rgba(192, 192, 192, 0.1) 30%, rgba(192, 192, 192, 0.1) 70%, transparent 70%);
     border: 3px solid var(--color-stone);
-    border-radius: 50%;
     position: relative;
 }
 
 .mv-icon-vision::before {
     content: '';
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background:
-        repeating-conic-gradient(
-            from 0deg,
-            transparent 0deg,
-            transparent 20deg,
-            rgba(192, 192, 192, 0.2) 20deg,
-            rgba(192, 192, 192, 0.2) 25deg
-        );
-    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--color-stone);
+    transform: rotate(45deg);
 }
 
 .mv-icon-vision::after {
     content: '';
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
     background: var(--color-stone);
     border-radius: 50%;
-    box-shadow:
-        0 0 0 3px var(--color-black),
-        0 0 0 6px var(--color-stone);
 }
 
 .mv-card h3 {
