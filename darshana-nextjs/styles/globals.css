@@ -1666,14 +1666,27 @@ section {
 }
 
 .contact-icon {
-    font-size: 1.5rem;
-    color: var(--color-accent);
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37 0%, #c5a028 50%, #b8960f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a1a;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.contact-icon svg {
+    width: 24px;
+    height: 24px;
 }
 
 .contact-item h4 {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
-    color: var(--color-white);
+    color: #d4af37;
 }
 
 .contact-item p {
