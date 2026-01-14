@@ -43,8 +43,9 @@ jobs:
           script: |
             cd /var/www/vhosts/darshanagalketayam.lk/repo
 
-            # Pull latest changes
-            git pull origin master
+            # Reset any local changes and pull latest
+            git fetch origin master
+            git reset --hard origin/master
 
             # Navigate to frontend directory
             cd darshana-nextjs
