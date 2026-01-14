@@ -47,9 +47,12 @@ export default function PortfolioSection({ categories }: PortfolioSectionProps) 
     <section className="portfolio" id="portfolio">
       <div className="container-full">
         <div className="section-header">
-          <h2 className="section-title" data-aos="fade-up">
+          <h2 className="section-title no-underline" data-aos="fade-up">
             Our Portfolio
           </h2>
+          <p className="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Five Timeless Categories of Stone Artistry
+          </p>
         </div>
 
         <div className="portfolio-grid">

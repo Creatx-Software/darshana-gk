@@ -9,9 +9,12 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
     <section className="services" id="services">
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title" data-aos="fade-up">
+          <h2 className="section-title no-underline" data-aos="fade-up">
             Our Services
           </h2>
+          <p className="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Comprehensive Stone Crafting Solutions
+          </p>
         </div>
 
         <div className="services-grid">
