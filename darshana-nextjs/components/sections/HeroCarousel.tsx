@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import type { HeroSlide } from '@/lib/api/strapi';
 import { API_URL } from '@/lib/api/config';
-import MetalButton from '@/components/ui/MetalButton';
 
 interface HeroCarouselProps {
   slides: HeroSlide[];
@@ -86,12 +86,12 @@ export default function HeroCarousel({ slides }: HeroCarouselProps) {
               </p>
               {slide.primaryCtaText && slide.primaryCtaLink && slide.secondaryCtaText && slide.secondaryCtaLink && (
                 <div className="hero-cta">
-                  <MetalButton href={slide.primaryCtaLink} variant="primary">
+                  <Link href={slide.primaryCtaLink} className="hero-btn-outline">
                     {slide.primaryCtaText}
-                  </MetalButton>
-                  <MetalButton href={slide.secondaryCtaLink} variant="outline">
+                  </Link>
+                  <Link href={slide.secondaryCtaLink} className="hero-btn-outline">
                     {slide.secondaryCtaText}
-                  </MetalButton>
+                  </Link>
                 </div>
               )}
               <div className="hero-decoration-bottom"></div>
