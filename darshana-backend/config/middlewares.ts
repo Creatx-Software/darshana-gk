@@ -8,8 +8,10 @@ export default [
         useDefaults: true,
         directives: {
           'connect-src': ["'self'", 'https:'],
-          'img-src': ["'self'", 'data:', 'blob:', 'https://darshanagalketayam.lk', 'https://api.darshanagalketayam.lk'],
+          'img-src': ["'self'", 'data:', 'blob:', 'https://darshanagalketayam.lk', 'https://api.darshanagalketayam.lk', 'https://*.cloudflare.com'],
           'media-src': ["'self'", 'data:', 'blob:', 'https://darshanagalketayam.lk', 'https://api.darshanagalketayam.lk'],
+          'script-src': ["'self'", "'unsafe-inline'", 'https://static.cloudflareinsights.com'],
+          'script-src-elem': ["'self'", "'unsafe-inline'", 'https://static.cloudflareinsights.com'],
           upgradeInsecureRequests: null,
         },
       },
