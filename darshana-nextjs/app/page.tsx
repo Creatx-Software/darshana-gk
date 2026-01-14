@@ -6,6 +6,7 @@ import ServicesSection from '@/components/sections/ServicesSection';
 import FoundersStorySection from '@/components/sections/FoundersStorySection';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import ContactSection from '@/components/sections/ContactSection';
+import Model3DSection from '@/components/sections/Model3DSection';
 import {
   fetchHeroSlides,
   fetchServices,
@@ -35,6 +36,7 @@ export default async function HomePage() {
       <HeroCarousel slides={heroSlides} />
       <AboutSection siteSettings={siteSettings} />
       <PortfolioSection categories={portfolioCategories} />
+      <Model3DSection />
       <GraniteColorsSection colors={graniteColors} />
       <ServicesSection services={services} />
       <FoundersStorySection siteSettings={siteSettings} />
