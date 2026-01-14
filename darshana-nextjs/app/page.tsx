@@ -5,7 +5,6 @@ import GraniteColorsSection from '@/components/sections/GraniteColorsSection';
 import ServicesSection from '@/components/sections/ServicesSection';
 import FoundersStorySection from '@/components/sections/FoundersStorySection';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
-import ContactSection from '@/components/sections/ContactSection';
 import Model3DSection from '@/components/sections/Model3DSection';
 import {
   fetchHeroSlides,
@@ -41,7 +40,6 @@ export default async function HomePage() {
       <ServicesSection services={services} />
       <FoundersStorySection siteSettings={siteSettings} />
       <TestimonialsSection testimonials={testimonials} />
-      <ContactSection />
     </main>
   );
 }

@@ -244,7 +244,7 @@ export default function CustomDesignPage() {
               Let's discuss your vision and create something truly unique together.
               Our team is ready to bring your ideas to life in stone.
             </p>
-            <Link href="/#contact" className="btn btn-stone">
+            <Link href="/contact" className="btn btn-stone">
               Get in Touch
             </Link>
           </div>

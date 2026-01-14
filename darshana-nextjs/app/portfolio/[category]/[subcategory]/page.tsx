@@ -137,7 +137,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
               Work with our master craftsmen to create a meaningful piece that honors tradition and
               spirituality.
             </p>
-            <a href="/#contact" className="btn btn-stone">
+            <a href="/contact" className="btn btn-stone">
               Start Your Project
             </a>
           </div>

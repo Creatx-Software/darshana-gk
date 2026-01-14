@@ -30,7 +30,7 @@ export const NAVIGATION_LINKS = [
   { label: 'Portfolio', href: '/#portfolio' },
   { label: 'Services', href: '/#services' },
   { label: 'Articles', href: '/articles' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Contact', href: '/contact' },
 ] as const;
 
 export const SERVICES = [
