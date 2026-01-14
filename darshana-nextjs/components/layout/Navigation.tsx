@@ -47,8 +47,8 @@ export default function Navigation() {
             <Link href="/custom-design" className="nav-floating-button" onClick={closeMenu}>
               <div className="nav-floating-icon">
                 <svg
-                  width="24"
-                  height="24"
+                  width="22"
+                  height="22"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,6 @@ export default function Navigation() {
                   />
                 </svg>
               </div>
-              <span className="nav-floating-text">Custom Design</span>
             </Link>
           </li>
         </ul>
