@@ -1706,6 +1706,52 @@ section {
 }
 
 /* ===================================
+   BACK TO TOP BUTTON
+   =================================== */
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid rgba(160, 160, 160, 0.5);
+    color: var(--color-light-gray);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    border-color: var(--color-white);
+    color: var(--color-white);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.back-to-top:active {
+    transform: scale(0.95);
+}
+
+.back-to-top svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ===================================
    RESPONSIVE DESIGN
    =================================== */
 
