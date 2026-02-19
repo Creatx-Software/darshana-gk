@@ -40,7 +40,7 @@ export default function Navigation() {
         <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`} id="navMenu">
           <li><Link href="/" className="nav-link" onClick={closeMenu}>HOME</Link></li>
           <li><Link href="/#portfolio" className="nav-link" onClick={closeMenu}>PORTFOLIO</Link></li>
-          <li><Link href="/articles" className="nav-link" onClick={closeMenu}>ARTICLES</Link></li>
+          {/* <li><Link href="/articles" className="nav-link" onClick={closeMenu}>ARTICLES</Link></li> */}{/* TODO: Uncomment when articles section is ready */}
           <li><Link href="/about" className="nav-link" onClick={closeMenu}>ABOUT</Link></li>
           <li><Link href="/contact" className="nav-link" onClick={closeMenu}>CONTACT</Link></li>
           <li className="nav-cta-floating">

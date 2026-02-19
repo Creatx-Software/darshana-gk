@@ -29,7 +29,7 @@ export const NAVIGATION_LINKS = [
   { label: 'About', href: '/about' },
   { label: 'Portfolio', href: '/#portfolio' },
   { label: 'Services', href: '/#services' },
-  { label: 'Articles', href: '/articles' },
+  // { label: 'Articles', href: '/articles' }, // TODO: Uncomment when articles section is ready
   { label: 'Contact', href: '/contact' },
 ] as const;
 

@@ -22,7 +22,7 @@ export default function Footer() {
             <Link href="/">Home</Link>
             <Link href="/#portfolio">Portfolio</Link>
             <Link href="/#services">Services</Link>
-            <Link href="/articles">Articles</Link>
+            {/* <Link href="/articles">Articles</Link> */}{/* TODO: Uncomment when articles section is ready */}
             <Link href="/about">About</Link>
             <Link href="/contact">Contact</Link>
           </div>
