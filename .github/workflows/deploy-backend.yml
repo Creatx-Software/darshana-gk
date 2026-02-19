@@ -26,6 +26,10 @@ jobs:
         working-directory: ./darshana-backend
         run: npm install
 
+      - name: Generate TypeScript types
+        working-directory: ./darshana-backend
+        run: npx strapi ts:generate-types
+
       - name: Build Strapi admin
         working-directory: ./darshana-backend
         run: npm run build
@@ -49,7 +53,8 @@ jobs:
             # Install dependencies
             npm install --production
 
-            # Build admin panel
+            # Generate TypeScript types and build admin panel
+            npx strapi ts:generate-types
             npm run build
 
             # Restart Strapi using PM2
