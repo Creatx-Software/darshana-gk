@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "custom_design_items",
+  "info": {
+    "singularName": "custom-design-item",
+    "pluralName": "custom-design-items",
+    "displayName": "Custom Design Item",
+    "description": "Showcase items for the custom design gallery"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "displayOrder": {
+      "type": "integer",
+      "default": 0
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

@@ -12,4 +12,6 @@ export const API_ENDPOINTS = {
   graniteColors: `${API_BASE}/granite-colors`,
   articles: `${API_BASE}/articles`,
   contactSubmissions: `${API_BASE}/contact-submissions`,
+  customDesignItems: `${API_BASE}/custom-design-items`,
+  customDesignPage: `${API_BASE}/custom-design-page`,
 } as const;

@@ -1,0 +1,29 @@
+{
+  "kind": "singleType",
+  "collectionName": "custom_design_pages",
+  "info": {
+    "singularName": "custom-design-page",
+    "pluralName": "custom-design-pages",
+    "displayName": "Custom Design Page",
+    "description": "Settings for the custom design page (catalog PDF)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "catalogTitle": {
+      "type": "string",
+      "default": "Download Our Design Catalog"
+    },
+    "catalogDescription": {
+      "type": "text"
+    },
+    "catalogFile": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files"]
+    }
+  }
+}

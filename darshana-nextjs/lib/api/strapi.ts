@@ -210,6 +210,38 @@ export async function fetchArticle(slug: string): Promise<Article | null> {
   return json.data[0] || null;
 }
 
+export interface CustomDesignItem extends StrapiEntity {
+  title: string;
+  description?: string;
+  displayOrder: number;
+  isActive: boolean;
+  image?: any;
+}
+
+export interface CustomDesignPage {
+  catalogTitle?: string;
+  catalogDescription?: string;
+  catalogFile?: any;
+}
+
+export async function fetchCustomDesignItems(): Promise<CustomDesignItem[]> {
+  const res = await fetch(`${API_ENDPOINTS.customDesignItems}?sort=displayOrder:asc&populate=image`, { next: { revalidate: 60 } });
+  if (!res.ok) throw new Error('Failed to fetch custom design items');
+  const json: StrapiResponse<CustomDesignItem[]> = await res.json();
+  return json.data;
+}
+
+export async function fetchCustomDesignPage(): Promise<CustomDesignPage | null> {
+  try {
+    const res = await fetch(`${API_ENDPOINTS.customDesignPage}?populate=*`, { next: { revalidate: 60 } });
+    if (!res.ok) return null;
+    const json: StrapiResponse<CustomDesignPage> = await res.json();
+    return json.data;
+  } catch (error) {
+    return null;
+  }
+}
+
 // Contact form submission
 export async function submitContactForm(data: {
   name: string;
