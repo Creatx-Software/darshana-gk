@@ -225,10 +225,14 @@ export interface CustomDesignPage {
 }
 
 export async function fetchCustomDesignItems(): Promise<CustomDesignItem[]> {
-  const res = await fetch(`${API_ENDPOINTS.customDesignItems}?sort=displayOrder:asc&populate=image`, { next: { revalidate: 60 } });
-  if (!res.ok) throw new Error('Failed to fetch custom design items');
-  const json: StrapiResponse<CustomDesignItem[]> = await res.json();
-  return json.data;
+  try {
+    const res = await fetch(`${API_ENDPOINTS.customDesignItems}?sort=displayOrder:asc&populate=image`, { next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const json: StrapiResponse<CustomDesignItem[]> = await res.json();
+    return json.data;
+  } catch (error) {
+    return [];
+  }
 }
 
 export async function fetchCustomDesignPage(): Promise<CustomDesignPage | null> {
