@@ -507,6 +507,73 @@ export interface ApiContactSubmissionContactSubmission
   };
 }
 
+export interface ApiCustomDesignItemCustomDesignItem
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'custom_design_items';
+  info: {
+    description: 'Showcase items for the custom design gallery';
+    displayName: 'Custom Design Item';
+    pluralName: 'custom-design-items';
+    singularName: 'custom-design-item';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    displayOrder: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    image: Schema.Attribute.Media<'images'>;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::custom-design-item.custom-design-item'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiCustomDesignPageCustomDesignPage
+  extends Struct.SingleTypeSchema {
+  collectionName: 'custom_design_pages';
+  info: {
+    description: 'Settings for the custom design page (catalog PDF)';
+    displayName: 'Custom Design Page';
+    pluralName: 'custom-design-pages';
+    singularName: 'custom-design-page';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    catalogDescription: Schema.Attribute.Text;
+    catalogFile: Schema.Attribute.Media<'files'>;
+    catalogTitle: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Download Our Design Catalog'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::custom-design-page.custom-design-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGalleryItemGalleryItem extends Struct.CollectionTypeSchema {
   collectionName: 'gallery_items';
   info: {
@@ -1328,6 +1395,8 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::article.article': ApiArticleArticle;
       'api::contact-submission.contact-submission': ApiContactSubmissionContactSubmission;
+      'api::custom-design-item.custom-design-item': ApiCustomDesignItemCustomDesignItem;
+      'api::custom-design-page.custom-design-page': ApiCustomDesignPageCustomDesignPage;
       'api::gallery-item.gallery-item': ApiGalleryItemGalleryItem;
       'api::granite-color.granite-color': ApiGraniteColorGraniteColor;
       'api::hero-slide.hero-slide': ApiHeroSlideHeroSlide;
