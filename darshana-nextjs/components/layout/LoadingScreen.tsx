@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function LoadingScreen() {
+  const pathname = usePathname();
   const [isHidden, setIsHidden] = useState(false);
-  const [shouldDisplay, setShouldDisplay] = useState(true);
+  const [shouldDisplay, setShouldDisplay] = useState(pathname === '/');
 
   useEffect(() => {
     // Display loading screen for 8 seconds
