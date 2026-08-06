@@ -52,6 +52,11 @@
       "relation": "oneToMany",
       "target": "api::portfolio-subcategory.portfolio-subcategory",
       "mappedBy": "category"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
     }
   }
 }

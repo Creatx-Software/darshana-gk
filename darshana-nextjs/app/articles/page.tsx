@@ -1,10 +1,54 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { articlesList } from '@/lib/data/articles';
+import JsonLd from '@/components/seo/JsonLd';
+import { ARTICLES_ENABLED, SEO_CONFIG } from '@/lib/seo/config';
+import { buildMetadata } from '@/lib/seo/metadata';
+import { absoluteUrl } from '@/lib/seo/utils';
+import { breadcrumbSchema, collectionPageSchema, jsonLdGraph } from '@/lib/seo/jsonld';
+
+const ARTICLES_DESCRIPTION =
+  'Insights on Sri Lankan stone carving, granite selection, Buddha statue iconography and memorial craftsmanship, written by the workshop that has practised the trade since 1911.';
+
+export const metadata: Metadata = buildMetadata({
+  title: 'Articles',
+  description: ARTICLES_DESCRIPTION,
+  path: '/articles',
+  ogEyebrow: 'Journal',
+  // Kept out of the index until the articles section is launched.
+  noindex: !ARTICLES_ENABLED,
+  keywords: [
+    'stone carving articles',
+    'granite carving guide',
+    'Buddha statue iconography',
+    'Sri Lankan craftsmanship',
+  ],
+});
+
+const articlesSchema = jsonLdGraph(
+  collectionPageSchema({
+    name: `Articles | ${SEO_CONFIG.name}`,
+    description: ARTICLES_DESCRIPTION,
+    path: '/articles',
+  }),
+  {
+    '@type': 'ItemList',
+    name: 'Articles',
+    itemListElement: articlesList.map((article, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: article.title,
+      url: absoluteUrl(`/articles/${article.slug}`),
+    })),
+  },
+  breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Articles' }])
+);
 
 export default function ArticlesPage() {
   return (
     <main>
+      <JsonLd data={articlesSchema} />
       {/* Page Header */}
       <section className="page-header">
         <div className="page-header-bg">

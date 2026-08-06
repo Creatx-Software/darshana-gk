@@ -1,14 +1,70 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { fetchPortfolioCategory, fetchPortfolioSubcategory } from '@/lib/api/strapi';
 import { API_URL } from '@/lib/api/config';
 import SubcategoryPageClient from './SubcategoryPageClient';
 import Image from 'next/image';
+import JsonLd from '@/components/seo/JsonLd';
+import { SEO_CONFIG } from '@/lib/seo/config';
+import { buildMetadata } from '@/lib/seo/metadata';
+import { buildStrapiMetadata } from '@/lib/seo/strapi';
+import { strapiMediaUrl, toPlainText, truncate } from '@/lib/seo/utils';
+import {
+  breadcrumbSchema,
+  collectionPageSchema,
+  imageGallerySchema,
+  jsonLdGraph,
+} from '@/lib/seo/jsonld';
 
 interface SubcategoryPageProps {
   params: Promise<{
     category: string;
     subcategory: string;
   }>;
+}
+
+export async function generateMetadata({ params }: SubcategoryPageProps): Promise<Metadata> {
+  const { category: categorySlug, subcategory: subcategorySlug } = await params;
+  const [category, subcategory] = await Promise.all([
+    fetchPortfolioCategory(categorySlug),
+    fetchPortfolioSubcategory(subcategorySlug),
+  ]);
+
+  const path = `/portfolio/${categorySlug}/${subcategorySlug}`;
+
+  if (!category || !subcategory) {
+    return buildMetadata({ title: 'Collection not found', path, noindex: true });
+  }
+
+  // The Sinhala name is what many local searches actually use, so it belongs in
+  // the title when the record has one.
+  const displayName = subcategory.sinhalaName
+    ? `${subcategory.name} (${subcategory.sinhalaName})`
+    : subcategory.name;
+
+  const description =
+    toPlainText(subcategory.description, 300) ||
+    truncate(
+      `${subcategory.name} hand-carved in granite by ${SEO_CONFIG.name} — part of our ${category.name} collection. Sri Lankan stone craftsmanship since ${SEO_CONFIG.foundingYear}.`,
+      300
+    );
+
+  return buildStrapiMetadata({
+    seo: subcategory.seo,
+    title: displayName,
+    description,
+    path,
+    ogEyebrow: category.name,
+    fallbackImage:
+      subcategory.image || subcategory.galleryItems?.[0]?.image || category.heroImage || category.image,
+    keywords: [
+      `${subcategory.name} Sri Lanka`,
+      `granite ${subcategory.name.toLowerCase()}`,
+      ...(subcategory.sinhalaName ? [subcategory.sinhalaName] : []),
+      `${category.name} Sri Lanka`,
+      ...SEO_CONFIG.keywords.slice(0, 3),
+    ],
+  });
 }
 
 export default async function SubcategoryPage({ params }: SubcategoryPageProps) {
@@ -21,6 +77,42 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   if (!category || !subcategory) {
     notFound();
   }
+
+  const path = `/portfolio/${categorySlug}/${subcategorySlug}`;
+
+  const galleryImages = (subcategory.galleryItems || [])
+    .flatMap((item) => {
+      const media = [item.image, ...(item.images || [])];
+      return media
+        .map((entry) => strapiMediaUrl(entry))
+        .filter((url): url is string => Boolean(url))
+        .map((url) => ({
+          url,
+          name: item.title || subcategory.name,
+          description: toPlainText(item.description, 200) || undefined,
+        }));
+    })
+    .slice(0, 40);
+
+  const subcategorySchema = jsonLdGraph(
+    collectionPageSchema({
+      name: `${subcategory.name} | ${category.name}`,
+      description: toPlainText(subcategory.description, 300) || undefined,
+      path,
+    }),
+    imageGallerySchema({
+      name: subcategory.name,
+      description: toPlainText(subcategory.description, 300) || undefined,
+      path,
+      images: galleryImages,
+    }),
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Portfolio', path: '/#portfolio' },
+      { name: category.name, path: `/portfolio/${category.slug}` },
+      { name: subcategory.name },
+    ])
+  );
 
   // Helper function to get image URL
   const getImageUrl = (imageObj: any) => {
@@ -45,6 +137,8 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
 
   return (
     <>
+      <JsonLd data={subcategorySchema} />
+
       {/* Page Header */}
       <section className="page-header">
         <div className="page-header-bg">

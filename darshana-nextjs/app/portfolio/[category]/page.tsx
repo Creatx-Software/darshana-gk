@@ -1,14 +1,79 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { fetchPortfolioCategory } from '@/lib/api/strapi';
+import { fetchPortfolioCategories, fetchPortfolioCategory } from '@/lib/api/strapi';
 import { API_URL } from '@/lib/api/config';
 import CategoryPageClient from './CategoryPageClient';
+import JsonLd from '@/components/seo/JsonLd';
+import { SEO_CONFIG } from '@/lib/seo/config';
+import { buildMetadata } from '@/lib/seo/metadata';
+import { buildStrapiMetadata } from '@/lib/seo/strapi';
+import { strapiMediaUrl, toPlainText, truncate } from '@/lib/seo/utils';
+import {
+  breadcrumbSchema,
+  collectionPageSchema,
+  imageGallerySchema,
+  jsonLdGraph,
+} from '@/lib/seo/jsonld';
 
 interface CategoryPageProps {
   params: Promise<{
     category: string;
   }>;
+}
+
+/** Pre-render the known categories; anything new is rendered on demand. */
+export async function generateStaticParams() {
+  try {
+    const categories = await fetchPortfolioCategories(false);
+    return categories.map((category) => ({ category: category.slug }));
+  } catch {
+    return [];
+  }
+}
+
+export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+  const { category: categorySlug } = await params;
+  const category = await fetchPortfolioCategory(categorySlug);
+
+  if (!category) {
+    return buildMetadata({
+      title: 'Category not found',
+      path: `/portfolio/${categorySlug}`,
+      noindex: true,
+    });
+  }
+
+  const subcategoryNames = (category.subcategories || [])
+    .map((sub) => sub.name)
+    .filter(Boolean)
+    .slice(0, 6);
+
+  const description =
+    toPlainText(category.description, 300) ||
+    truncate(
+      `${category.name} in granite by ${SEO_CONFIG.name}${
+        subcategoryNames.length ? ` — ${subcategoryNames.join(', ')}` : ''
+      }. Hand-carved in Sri Lanka by four generations of master craftsmen since ${SEO_CONFIG.foundingYear}.`,
+      300
+    );
+
+  return buildStrapiMetadata({
+    seo: category.seo,
+    title: category.name,
+    description,
+    path: `/portfolio/${category.slug}`,
+    ogEyebrow: 'Portfolio',
+    // Real photography of the work beats a generated card when we have it.
+    fallbackImage: category.heroImage || category.image,
+    keywords: [
+      `${category.name} Sri Lanka`,
+      `granite ${category.name.toLowerCase()}`,
+      ...subcategoryNames.map((name) => `${name} Sri Lanka`),
+      ...SEO_CONFIG.keywords.slice(0, 4),
+    ],
+  });
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
@@ -18,6 +83,43 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   if (!category) {
     notFound();
   }
+
+  const categorySchema = jsonLdGraph(
+    collectionPageSchema({
+      name: `${category.name} | ${SEO_CONFIG.name}`,
+      description: toPlainText(category.description, 300) || undefined,
+      path: `/portfolio/${category.slug}`,
+    }),
+    imageGallerySchema({
+      name: category.name,
+      description: toPlainText(category.description, 300) || undefined,
+      path: `/portfolio/${category.slug}`,
+      images: (category.subcategories || [])
+        .flatMap((sub) => [sub.image, ...(sub.galleryItems || []).map((item) => item.image)])
+        .map((media) => strapiMediaUrl(media))
+        .filter((url): url is string => Boolean(url))
+        // A handful of representative images keeps the payload sane.
+        .slice(0, 24)
+        .map((url) => ({ url, name: category.name })),
+    }),
+    (category.subcategories || []).length
+      ? {
+          '@type': 'ItemList',
+          name: `${category.name} collections`,
+          itemListElement: (category.subcategories || []).map((sub, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: sub.name,
+            url: `${SEO_CONFIG.url}/portfolio/${category.slug}/${sub.slug}`,
+          })),
+        }
+      : null,
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Portfolio', path: '/#portfolio' },
+      { name: category.name },
+    ])
+  );
 
   // Helper function to get image URL (prioritize heroImage for hero section)
   const getCategoryImageUrl = () => {
@@ -69,6 +171,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <>
+      <JsonLd data={categorySchema} />
+
       {/* Page Header */}
       <section className="page-header">
         <div className="page-header-bg">

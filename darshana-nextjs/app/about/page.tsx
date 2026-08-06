@@ -3,17 +3,44 @@ import Image from 'next/image';
 import { fetchSiteSettings } from '@/lib/api/strapi';
 import { API_URL } from '@/lib/api/config';
 import AboutFAQ from './AboutFAQ';
+import JsonLd from '@/components/seo/JsonLd';
+import { faqData } from '@/lib/data/faq';
+import { buildStrapiMetadata } from '@/lib/seo/strapi';
+import { toPlainText } from '@/lib/seo/utils';
+import { aboutPageSchema, breadcrumbSchema, faqSchema, jsonLdGraph } from '@/lib/seo/jsonld';
 
-export const metadata: Metadata = {
-  title: 'About Us | Darshana Gal Ketayam',
-  description: 'Discover the story of Darshana Gal Ketayam - four generations of Sri Lankan stone carving excellence since 1911. Learn about our heritage, craftsmanship, and dedication to preserving this sacred art.',
-};
+const ABOUT_DESCRIPTION =
+  'Discover the story of Darshana Gal Ketayam — four generations of Sri Lankan stone carving excellence since 1911. Our heritage, our craftsmanship, and our dedication to preserving this sacred art.';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const siteSettings = await fetchSiteSettings().catch(() => null);
+
+  return buildStrapiMetadata({
+    title: 'About Us',
+    description: toPlainText(siteSettings?.siteDescription, 300) || ABOUT_DESCRIPTION,
+    path: '/about',
+    ogEyebrow: 'Our Heritage',
+    fallbackImage: siteSettings?.heritageImage || siteSettings?.legacyImage,
+  });
+}
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
   const siteSettings = await fetchSiteSettings().catch(() => null);
+
+  const aboutSchema = jsonLdGraph(
+    aboutPageSchema({
+      path: '/about',
+      description: toPlainText(siteSettings?.siteDescription, 300) || ABOUT_DESCRIPTION,
+    }),
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'About' },
+    ]),
+    faqSchema(faqData)
+  );
 
   // Helper function to get legacy image URL
   const getLegacyImageUrl = () => {
@@ -55,6 +82,8 @@ export default async function AboutPage() {
 
   return (
     <>
+      <JsonLd data={aboutSchema} />
+
       {/* Page Header */}
       <section className="page-header about-page-header">
         <div className="page-header-bg">

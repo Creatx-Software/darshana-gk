@@ -1,15 +1,33 @@
 import type { Metadata } from 'next';
 import ContactPageClient from './ContactPageClient';
 import ContactMap from './ContactMap';
+import JsonLd from '@/components/seo/JsonLd';
+import { buildMetadata } from '@/lib/seo/metadata';
+import { breadcrumbSchema, contactPageSchema, jsonLdGraph } from '@/lib/seo/jsonld';
 
-export const metadata: Metadata = {
-  title: 'Contact Us | Darshana Gal Ketayam',
-  description: 'Get in touch with Darshana Gal Ketayam. Visit our workshop in Mudungoda, Gampaha, Sri Lanka or contact us to discuss your stone carving project.',
-};
+export const metadata: Metadata = buildMetadata({
+  title: 'Contact Us',
+  description:
+    'Get in touch with Darshana Gal Ketayam. Visit our stone carving workshop on Kandy Road, Mudungoda, Gampaha, Sri Lanka, or call us to discuss your granite carving, memorial or Buddha statue project.',
+  path: '/contact',
+  ogEyebrow: 'Visit the workshop',
+  keywords: [
+    'contact stone carver Sri Lanka',
+    'granite workshop Gampaha',
+    'stone carving quote Sri Lanka',
+    'Darshana Gal Ketayam contact',
+  ],
+});
+
+const contactSchema = jsonLdGraph(
+  contactPageSchema('/contact'),
+  breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Contact' }])
+);
 
 export default function ContactPage() {
   return (
     <>
+      <JsonLd data={contactSchema} />
       {/* Page Header */}
       <section className="page-header contact-page-header">
         <div className="page-header-bg">

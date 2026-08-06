@@ -1,31 +1,87 @@
-'use client';
-
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { use } from 'react';
-import { articlesData } from '@/lib/data/articles';
+import { notFound } from 'next/navigation';
+import { articlesData, articlesList } from '@/lib/data/articles';
+import JsonLd from '@/components/seo/JsonLd';
+import { ARTICLES_ENABLED } from '@/lib/seo/config';
+import { buildMetadata } from '@/lib/seo/metadata';
+import { toPlainText, truncate } from '@/lib/seo/utils';
+import { articleSchema, breadcrumbSchema, jsonLdGraph } from '@/lib/seo/jsonld';
 
-export default function ArticleSinglePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
+interface ArticlePageProps {
+  params: Promise<{ slug: string }>;
+}
+
+/** Pre-render every article so each one ships its own crawlable HTML. */
+export function generateStaticParams() {
+  return articlesList.map((article) => ({ slug: article.slug }));
+}
+
+/** The article `date` is authored as display text ("January 15, 2024"). */
+function toIsoDate(date: string): string | undefined {
+  const parsed = new Date(date);
+  return Number.isNaN(parsed.getTime()) ? undefined : parsed.toISOString();
+}
+
+/** First paragraph of the lead text, used when no excerpt was written. */
+function articleDescription(slug: string): string {
+  const article = articlesData[slug];
+  const listEntry = articlesList.find((entry) => entry.slug === slug);
+  return truncate(listEntry?.excerpt || toPlainText(article?.content?.leadText, 300), 300);
+}
+
+export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
+  const { slug } = await params;
   const article = articlesData[slug];
 
   if (!article) {
-    return (
-      <main>
-        <section className="page-header">
-          <div className="page-header-content">
-            <h1>Article Not Found</h1>
-            <Link href="/articles" className="btn btn-stone">
-              ← Back to Articles
-            </Link>
-          </div>
-        </section>
-      </main>
-    );
+    return buildMetadata({ title: 'Article not found', path: `/articles/${slug}`, noindex: true });
   }
+
+  return buildMetadata({
+    title: article.title,
+    description: articleDescription(slug),
+    path: `/articles/${slug}`,
+    ogType: 'article',
+    ogEyebrow: article.category,
+    images: [{ url: article.featuredImage, alt: article.title }],
+    // Kept out of the index until the articles section is launched.
+    noindex: !ARTICLES_ENABLED,
+    article: {
+      publishedTime: toIsoDate(article.date),
+      section: article.category,
+    },
+  });
+}
+
+export default async function ArticleSinglePage({ params }: ArticlePageProps) {
+  const { slug } = await params;
+  const article = articlesData[slug];
+
+  if (!article) {
+    notFound();
+  }
+
+  const schema = jsonLdGraph(
+    articleSchema({
+      title: article.title,
+      description: articleDescription(slug),
+      path: `/articles/${slug}`,
+      image: article.featuredImage,
+      datePublished: toIsoDate(article.date),
+      section: article.category,
+    }),
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Articles', path: '/articles' },
+      { name: article.title },
+    ])
+  );
 
   return (
     <main>
+      <JsonLd data={schema} />
       {/* Article Header */}
       <section className="article-header">
         <div className="article-header-bg">

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Inter } from 'next/font/google'
 import '../styles/globals.css'
 import Navigation from '@/components/layout/Navigation'
@@ -7,6 +7,15 @@ import ScrollAnimations from '@/components/layout/ScrollAnimations'
 import Footer from '@/components/layout/Footer'
 import ImageProtection from '@/components/layout/ImageProtection'
 import BackToTop from '@/components/ui/BackToTop'
+import JsonLd from '@/components/seo/JsonLd'
+import { buildRootMetadata } from '@/lib/seo/metadata'
+import { SEO_CONFIG } from '@/lib/seo/config'
+import {
+  jsonLdGraph,
+  localBusinessSchema,
+  organizationSchema,
+  websiteSchema,
+} from '@/lib/seo/jsonld'
 
 const cormorantGaramond = Cormorant_Garamond({
   weight: ['300', '400', '500', '600', '700'],
@@ -22,38 +31,24 @@ const inter = Inter({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://darshanagalketayam.lk'),
-  title: 'Darshana Gal Ketayam - Crafting Timeless Stonework',
-  description: 'Four generations of master craftsmen preserving Sri Lanka\'s ancient art of granite carving since 1911. Specializing in sacred forms, memorials, and architectural stonework.',
-  keywords: 'stone carving, granite carving, Sri Lanka, Buddha statues, memorials, tombstones, architectural stonework',
-  icons: {
-    icon: '/darshana-gal-katayam-light.svg',
-    apple: '/darshana-gal-katayam-light.svg',
-  },
-  openGraph: {
-    title: 'Darshana Gal Ketayam - Crafting Timeless Stonework',
-    description: 'Four generations of master craftsmen preserving Sri Lanka\'s ancient art of granite carving since 1911. Specializing in sacred forms, memorials, and architectural stonework.',
-    url: 'https://darshanagalketayam.lk',
-    siteName: 'Darshana Gal Ketayam',
-    images: [
-      {
-        url: '/darshana-gal-katayam-light.svg',
-        width: 1200,
-        height: 630,
-        alt: 'Darshana Gal Ketayam Logo',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Darshana Gal Ketayam - Crafting Timeless Stonework',
-    description: 'Four generations of master craftsmen preserving Sri Lanka\'s ancient art of granite carving since 1911.',
-    images: ['/darshana-gal-katayam-light.svg'],
-  },
+export const metadata: Metadata = buildRootMetadata()
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f5f5f5' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+  ],
+  colorScheme: 'dark light',
 }
+
+/**
+ * Site-wide structured data. Emitted once here so every page inherits the
+ * organisation, workshop and website entities; page-level schemas reference
+ * these by @id instead of repeating them.
+ */
+const siteSchema = jsonLdGraph(organizationSchema(), localBusinessSchema(), websiteSchema())
 
 export default function RootLayout({
   children,
@@ -61,8 +56,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${cormorantGaramond.variable} ${inter.variable}`}>
+    <html lang={SEO_CONFIG.language} className={`${cormorantGaramond.variable} ${inter.variable}`}>
+      <head>
+        {/* Warm up the CMS origin — hero and gallery images all come from it. */}
+        <link
+          rel="preconnect"
+          href={process.env.NEXT_PUBLIC_STRAPI_URL || 'https://api.darshanagalketayam.lk'}
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_STRAPI_URL || 'https://api.darshanagalketayam.lk'} />
+      </head>
       <body>
+        <JsonLd data={siteSchema} />
         <LoadingScreen />
         <ScrollAnimations />
         <ImageProtection />

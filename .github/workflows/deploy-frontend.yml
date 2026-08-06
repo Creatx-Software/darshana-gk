@@ -29,7 +29,11 @@ jobs:
       - name: Build Next.js application
         working-directory: ./darshana-nextjs
         env:
-          NEXT_PUBLIC_API_URL: https://api.darshanagalketayam.lk
+          # NEXT_PUBLIC_STRAPI_URL is the name the app actually reads
+          # (lib/api/config.ts). NEXT_PUBLIC_API_URL was never used.
+          NEXT_PUBLIC_STRAPI_URL: https://api.darshanagalketayam.lk
+          # Canonical URLs, OG tags, sitemap and robots.txt are built from this.
+          NEXT_PUBLIC_SITE_URL: https://darshanagalketayam.lk
           NODE_ENV: production
         run: npm run build
 
@@ -53,7 +57,12 @@ jobs:
             # Install dependencies
             npm install --production
 
-            # Build Next.js
+            # Build Next.js.
+            # These are set inline rather than relying on the server's .env so
+            # canonical URLs, OG tags and the sitemap always point at the live
+            # domain. Shell variables take precedence over .env files in Next.
+            NEXT_PUBLIC_STRAPI_URL=https://api.darshanagalketayam.lk \
+            NEXT_PUBLIC_SITE_URL=https://darshanagalketayam.lk \
             npm run build
 
             # Restart Next.js using PM2
