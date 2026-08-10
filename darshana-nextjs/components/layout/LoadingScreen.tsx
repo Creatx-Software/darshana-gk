@@ -28,11 +28,17 @@ export default function LoadingScreen() {
     <div className={`loading-screen ${isHidden ? 'hidden' : ''}`} id="loadingScreen">
       <div className="loading-content">
         <div className="loading-logo">
-          <object
-            data="/logo-animated.svg"
-            type="image/svg+xml"
+          {/*
+            Deliberately an <img>, not an <object>. An <object> embeds the SVG as
+            a document, and Gecko paints that document's canvas opaque white —
+            white logo strokes on a white canvas render as a solid white block.
+            An <img> composites transparently in every engine, and the SVG's own
+            CSS @keyframes still run because they live inside the file.
+          */}
+          <img
+            src="/logo-animated.svg"
             className="loading-svg-object"
-            aria-label="Darshana Gal Ketayam Logo"
+            alt="Darshana Gal Ketayam"
           />
         </div>
         <div className="loading-bar">

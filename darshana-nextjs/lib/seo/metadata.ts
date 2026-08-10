@@ -164,7 +164,9 @@ export function buildRootMetadata(): Metadata {
     creator: SEO_CONFIG.name,
     publisher: SEO_CONFIG.legalName,
     category: 'Arts & Crafts',
-    referrer: 'origin-when-cross-origin',
+    // No `referrer` override: browsers already default to
+    // strict-origin-when-cross-origin, and Firefox logs a console warning for
+    // every cross-site request when asked to loosen it.
     manifest: '/manifest.webmanifest',
     formatDetection: {
       telephone: true,
