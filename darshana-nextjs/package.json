@@ -36,6 +36,7 @@
     "@types/react-dom": "^19.2.0",
     "@types/three": "^0.182.0",
     "gltf-pipeline": "^4.3.0",
+    "sharp": "^0.35.4",
     "typescript": "^5.9.3"
   },
   "engines": {
